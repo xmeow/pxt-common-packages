@@ -1,5 +1,5 @@
 #include "pxt.h"
-
+#include "sam.h"
 
 static void NVIC_CopyToRAM() {
     uint32_t *vectors = (uint32_t *)SCB->VTOR;
