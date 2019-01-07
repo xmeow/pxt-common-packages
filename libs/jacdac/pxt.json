@@ -17,7 +17,7 @@
         "console.ts",
         "bridge.ts",
         "controllerclient.ts",
-        "pins.ts",
+        "pinservice.ts",
         "debugviews.ts",        
         "ns.ts"
     ],

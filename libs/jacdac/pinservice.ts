@@ -43,7 +43,7 @@ namespace jacdac {
     ];
 
     //% fixedInstances
-    export class PinsService extends Service {
+    export class PinService extends Service {
         constructor() {
             super("io", jacdac.IO_DEVICE_CLASS, 0);
         }
@@ -94,15 +94,14 @@ namespace jacdac {
             return true;
         }
 
-        private handleAnalogWrite(pins: number, states: Buffer[]): boolean {
+        private handleAnalogWrite(pins: number, states: Buffer): boolean {
             let k = 0;
-            for (let i = 0; i < PIN_CFGS.length && k < states.length; ++i) {
+            for (let i = 0; i < PIN_CFGS.length && k + 1 < states.length; ++i) {
                 const mask = 1 << i;
                 if (pins & mask) {
-                    const on = !!(states & mask);
                     const pin = pxt.getPinCfg(PIN_CFGS[i]);
-                    pin.analogWrite(states[k]);
-                    k++;
+                    pin.analogWrite(states.getNumber(NumberFormat.UInt16LE, k));
+                    k += 2;
                 }
             }
             return true;
@@ -116,20 +115,20 @@ namespace jacdac {
                 if (pins & mask) n++;
             }
 
-            if (n > 15) {
-                this.log("too many analog reads")
-                n = 15;
+            if (n > 7) {
+                this.log("too many analog reads, max 7")
+                n = 7;
             }
 
             const pkt = this.createPinPacket(PinCommand.DigitalRead, pins, n);
             let k = 0;
-            for (let i = 0; i < PIN_CFGS.length && k < n; ++i) {
+            for (let i = 0; i < PIN_CFGS.length && k + 1 < n; ++i) {
                 const mask = 1 << i;
                 if (pins & mask) {
                     const pin = pxt.getPinCfg(PIN_CFGS[i]);
                     const value = pin.AnalogRead();
-                    pkt[5 + k] = value;
-                    k++;
+                    pkt.setNumber(NumberFormat.UInt16LE, 5 + k, value);
+                    k += 2;
                 }
             }
 
@@ -145,6 +144,6 @@ namespace jacdac {
         }
     }
 
-    //% fixedInstance whenUsed block="pins service"
-    export const pinsService = new PinsService();
+    //% fixedInstance whenUsed block="pin service"
+    export const pinService = new PinService();
 }
