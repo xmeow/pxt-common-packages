@@ -17,7 +17,8 @@
         "console.ts",
         "bridge.ts",
         "controllerclient.ts",
-        "debugviews.ts",
+        "pins.ts",
+        "debugviews.ts",        
         "ns.ts"
     ],
     "testFiles": [
