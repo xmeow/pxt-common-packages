@@ -23,7 +23,6 @@ namespace jacdac {
         DAL.CFG_PIN_D12,
         DAL.CFG_PIN_D13,
         DAL.CFG_PIN_D14,
-        DAL.CFG_PIN_D15,
         DAL.CFG_PIN_A0,
         DAL.CFG_PIN_A1,
         DAL.CFG_PIN_A2,
@@ -38,9 +37,41 @@ namespace jacdac {
         DAL.CFG_PIN_A11,
         DAL.CFG_PIN_A12,
         DAL.CFG_PIN_A13,
-        DAL.CFG_PIN_A14,
-        DAL.CFG_PIN_A15
+        DAL.CFG_PIN_A14
     ];
+
+    export const enum Pins {
+        D0 = 1 << 0,
+        D1 = 1 << 1,
+        D2 = 1 << 2,
+        D3 = 1 << 3,
+        D4 = 1 << 4,
+        D5 = 1 << 5,
+        D6 = 1 << 6,
+        D7 = 1 << 7,
+        D8 = 1 << 8,
+        D9 = 1 << 9,
+        D10 = 1 << 10,
+        D11 = 1 << 11,
+        D12 = 1 << 12,
+        D13 = 1 << 13,
+        D14 = 1 << 14,
+        A0 = 1 << 15,
+        A1 = 1 << 16,
+        A2 = 1 << 17,
+        A3 = 1 << 18,
+        A4 = 1 << 19,
+        A5 = 1 << 20,
+        A6 = 1 << 21,
+        A7 = 1 << 22,
+        A8 = 1 << 23,
+        A9 = 1 << 24,
+        A10 = 1 << 25,
+        A11 = 1 << 26,
+        A12 = 1 << 27,
+        A13 = 1 << 28,
+        A14 = 1 << 29
+    }
 
     //% fixedInstances
     export class PinService extends Service {
@@ -57,7 +88,7 @@ namespace jacdac {
                 case PinCommand.DigitalRead:
                     return this.handleDigitalRead(pins);
                 case PinCommand.DigitalWrite:
-                    return this.handleDigitalWrite(pins, data[5]);
+                    return this.handleDigitalWrite(pins, data.getNumber(NumberFormat.UInt32LE, 5));
                 case PinCommand.AnalogRead:
                     return this.handleAnalogRead(pins);
                 case PinCommand.AnalogWrite:
